@@ -61,7 +61,8 @@ pipeline {
                 }
             }
         }
-*/        
+
+*/  }      
     post {
         always {
             echo "Pipeline finished for branch ${env.BRANCH_NAME}"
