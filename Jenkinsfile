@@ -25,7 +25,7 @@ pipeline {
             steps {
                 script {
                     echo "Building Docker image: ${IMAGE_NAME}:${IMAGE_TAG}"
-                    sh "docker compose build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
+                    sh "docker compose build"
                 }
             }
     }
@@ -39,7 +39,7 @@ pipeline {
                     echo "Pushing Docker image: ${IMAGE_NAME}:${IMAGE_TAG}"
                     sh """
                         docker login -u ${DOCKER_ID} -p ${DOCKER_PASS}
-                        docker compose push ${IMAGE_NAME}:${IMAGE_TAG}
+                        docker compose push
                     """
                 }
             }
