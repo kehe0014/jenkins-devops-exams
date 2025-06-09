@@ -12,6 +12,27 @@ pipeline {
 
     stages {
 
+        stage('Checkout SCM') {
+            steps {
+                // This step performs the actual checkout of your code
+                checkout scm
+
+                // This script block processes the branch name
+                script {
+                    // Check if env.GIT_BRANCH is available before processing
+                    if (env.GIT_BRANCH != null) {
+                        env.BRANCH_NAME = env.GIT_BRANCH.replace('origin/', '')
+                        echo "Processed GIT_BRANCH: ${env.GIT_BRANCH}"
+                        echo "Set BRANCH_NAME: ${env.BRANCH_NAME}"
+                    } else {
+                        // Fallback or warning if GIT_BRANCH is not set (less likely with Multibranch Pipeline)
+                        echo "Warning: env.GIT_BRANCH is not set. Cannot determine BRANCH_NAME reliably."
+                        env.BRANCH_NAME = "unknown" // Set a default or handle as an error
+                    }
+                }
+            }
+        }
+
     stage('Debug Branch') {
             steps {
                 script {
