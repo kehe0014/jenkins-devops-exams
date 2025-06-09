@@ -19,18 +19,18 @@ pipeline {
                     echo "Building branch: ${env.BRANCH_NAME}"
                 }
             }
-        }
+    }
 
-        stage('Build Docker Image') {
+    stage('Build Docker Image') {
             steps {
                 script {
                     echo "Building Docker image: ${IMAGE_NAME}:${IMAGE_TAG}"
                     sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
                 }
             }
-        }
+    }
 
-        stage('Push Docker Image') {
+    stage('Push Docker Image') {
             environment {
                 DOCKER_PASS = credentials("DOCKER_HUB_PASS")
             }
@@ -61,7 +61,6 @@ pipeline {
                 }
             }
         }
-
         
     post {
         always {
