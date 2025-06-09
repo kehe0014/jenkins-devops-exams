@@ -39,8 +39,8 @@ pipeline {
                     echo "Pushing Docker image: ${IMAGE_NAME}:${IMAGE_TAG}"
                     sh """
                         docker login -u ${DOCKER_ID} -p ${DOCKER_PASS}
-                        docker compose push // Push the Docker images to Docker Hub
-                    """
+                        docker compose push 
+                    """ // Push the Docker images to Docker Hub
                 }
             }
         }
