@@ -1,46 +1,41 @@
 pipeline {
-    agent any
 
     environment {
         DOCKER_ID = "tdksoft"
-        IMAGE_NAME = "${DOCKER_ID}/jenkins-devops-eval"
         IMAGE_TAG = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
         HELM_CHART_PATH = './helm'
         HELM_RELEASE_NAME = "my-python-app-${env.BRANCH_NAME}"
         K8S_NAMESPACE = "default"
     }
 
+    agent any
+
     stages {
-        stage('Checkout SCM') {
+
+    stage('Build Docker Image') { // Build the Docker image using docker-compose
             steps {
-                checkout scm
                 script {
-                    env.BRANCH_NAME = env.GIT_BRANCH.replace('origin/', '')
-                    echo "Building branch: ${env.BRANCH_NAME}"
+                    sh """
+                    docker compose build
+                    sleep 6
+                    """
                 }
             }
     }
 
-    stage('Build Docker Image') {
-            steps {
-                script {
-                    echo "Building Docker image: ${IMAGE_NAME}:${IMAGE_TAG}"
-                    sh "docker compose build" //Build the Docker image using docker-compose
-                }
+    stage('Push Docker Image') { // Push the Docker image to Docker Hub
+            when {
+                expression { env.BRANCH_NAME in ['main', 'dev'] }
             }
-    }
-
-    stage('Push Docker Image') {
             environment {
                 DOCKER_PASS = credentials("DOCKER_HUB_PASS")
             }
             steps {
                 script {
-                    echo "Pushing Docker image: ${IMAGE_NAME}:${IMAGE_TAG}"
                     sh """
                         docker login -u ${DOCKER_ID} -p ${DOCKER_PASS}
                         docker compose push 
-                    """ // Push the Docker images to Docker Hub
+                    """ 
                 }
             }
         }
