@@ -69,7 +69,7 @@ pipeline {
                         env.K8S_NAMESPACE = 'production'
                     } else if (env.BRANCH_NAME == 'dev') {                    
                         env.TARGET_ENVS = ['dev', 'staging', 'qa']
-                        env.K8S_NAMESPACE = 'development' /
+                        env.K8S_NAMESPACE = 'development' 
                     } else {
                         env.TARGET_ENVS = ['dev']
                         env.K8S_NAMESPACE = 'development'
