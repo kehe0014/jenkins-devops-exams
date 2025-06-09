@@ -1,5 +1,6 @@
 services:
   movie_service:
+    image: ${DOCKER_ID}/movie_service:tag
     build: ./movie-service
     command: uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
     volumes:
@@ -22,6 +23,7 @@ services:
       - POSTGRES_DB=movie_db_dev
 
   cast_service:
+    image: ${DOCKER_ID}/cast_service:tag
     build: ./cast-service
     command: uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
     volumes:
