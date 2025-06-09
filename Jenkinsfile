@@ -33,15 +33,6 @@ pipeline {
             }
         }
 
-    stage('Debug Branch') {
-            steps {
-                script {
-                    echo "GIT_BRANCH: ${env.GIT_BRANCH}"
-                    echo "BRANCH_NAME: ${env.BRANCH_NAME}"
-                }
-            }
-        }
-
     stage('Build Docker Image') { // Build the Docker image using docker-compose
             steps {
                 script {
@@ -69,7 +60,7 @@ pipeline {
                 }
             }
         }
-/*
+
         stage('Choose Environment') {
             steps {
                 script {
@@ -87,7 +78,7 @@ pipeline {
             }
         }
 
-*/  }      
+  }      
     post {
         always {
             echo "Pipeline finished for branch ${env.BRANCH_NAME}"
