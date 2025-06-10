@@ -77,9 +77,22 @@ pipeline {
                 }
             }
         }
+        stage('Deploy to Kubernetes') {
+            steps {
+                script {
+                    sh """
+                    helm upgrade --install ${HELM_RELEASE_NAME} ${HELM_CHART_PATH} \
+                        --set image.repository=${DOCKER_ID}/my-python-app \
+                        --set image.tag=${IMAGE_TAG} \
+                        --namespace ${K8S_NAMESPACE} \
+                        --create-namespace
+                    """
+                }
+            }
+        }
 
   }      
-    post {
+  post {
         always {
             echo "Pipeline finished for branch ${env.BRANCH_NAME}"
         }
