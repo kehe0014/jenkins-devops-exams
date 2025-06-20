@@ -3,7 +3,7 @@ pipeline {
     environment {
         DOCKER_ID = "tdksoft"
         IMAGE_TAG = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
-        HELM_CHART_PATH = './helm'
+        HELM_CHART_PATH = './charts'
         HELM_RELEASE_NAME = "my-python-app-${env.BRANCH_NAME}"
         K8S_NAMESPACE = "default"
     }
@@ -66,13 +66,13 @@ pipeline {
                 script {
                     if (env.BRANCH_NAME == 'main') {
                         env.TARGET_ENV = 'prod'
-                        env.K8S_NAMESPACE = 'production'
+                        env.K8S_NAMESPACE = 'release'
                     } else if (env.BRANCH_NAME == 'dev') {                    
                         env.TARGET_ENVS = ['dev', 'staging', 'qa']
-                        env.K8S_NAMESPACE = 'development' 
+                        env.K8S_NAMESPACE = 'dev' 
                     } else {
                         env.TARGET_ENVS = ['dev']
-                        env.K8S_NAMESPACE = 'development'
+                        env.K8S_NAMESPACE = 'dev'
                     }
                 }
             }
