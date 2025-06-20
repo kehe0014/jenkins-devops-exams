@@ -77,6 +77,12 @@ pipeline {
                 }
             }
         }
+        stage('Kubernetes Check') {
+            steps {
+                sh 'kubectl get pods -A'
+                sh 'kubectl cluster-info'
+            }
+        }
         stage('Deploy to Kubernetes') {
             steps {
                 script {
